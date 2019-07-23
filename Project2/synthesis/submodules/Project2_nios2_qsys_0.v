@@ -500,12 +500,12 @@ defparam Project2_nios2_qsys_0_ociram_sp_ram.lpm_file = "Project2_nios2_qsys_0_o
 //synthesis read_comments_as_HDL on
 //defparam Project2_nios2_qsys_0_ociram_sp_ram.lpm_file = "Project2_nios2_qsys_0_ociram_default_contents.mif";
 //synthesis read_comments_as_HDL off
-  assign cfgrom_readdata = (MonAReg[4 : 2] == 3'd0)? 32'h00002020 :
+  assign cfgrom_readdata = (MonAReg[4 : 2] == 3'd0)? 32'h00000020 :
     (MonAReg[4 : 2] == 3'd1)? 32'h00000e0e :
     (MonAReg[4 : 2] == 3'd2)? 32'h00040000 :
     (MonAReg[4 : 2] == 3'd3)? 32'h00000000 :
     (MonAReg[4 : 2] == 3'd4)? 32'h20000000 :
-    (MonAReg[4 : 2] == 3'd5)? 32'h00002000 :
+    (MonAReg[4 : 2] == 3'd5)? 32'h00000000 :
     (MonAReg[4 : 2] == 3'd6)? 32'h00000000 :
     32'h00000000;
 
@@ -3128,6 +3128,8 @@ endmodule
 
 module Project2_nios2_qsys_0 (
                                // inputs:
+                                E_ci_multi_done,
+                                E_ci_result,
                                 clk,
                                 d_irq,
                                 d_readdata,
@@ -3143,6 +3145,22 @@ module Project2_nios2_qsys_0 (
                                 reset_n,
 
                                // outputs:
+                                D_ci_a,
+                                D_ci_b,
+                                D_ci_c,
+                                D_ci_n,
+                                D_ci_readra,
+                                D_ci_readrb,
+                                D_ci_writerc,
+                                E_ci_dataa,
+                                E_ci_datab,
+                                E_ci_multi_clk_en,
+                                E_ci_multi_clock,
+                                E_ci_multi_reset,
+                                E_ci_multi_start,
+                                W_ci_estatus,
+                                W_ci_ipending,
+                                W_ci_status,
                                 d_address,
                                 d_byteenable,
                                 d_read,
@@ -3153,11 +3171,26 @@ module Project2_nios2_qsys_0 (
                                 jtag_debug_module_debugaccess_to_roms,
                                 jtag_debug_module_readdata,
                                 jtag_debug_module_resetrequest,
-                                jtag_debug_module_waitrequest,
-                                no_ci_readra
+                                jtag_debug_module_waitrequest
                              )
 ;
 
+  output  [  4: 0] D_ci_a;
+  output  [  4: 0] D_ci_b;
+  output  [  4: 0] D_ci_c;
+  output  [  7: 0] D_ci_n;
+  output           D_ci_readra;
+  output           D_ci_readrb;
+  output           D_ci_writerc;
+  output  [ 31: 0] E_ci_dataa;
+  output  [ 31: 0] E_ci_datab;
+  output           E_ci_multi_clk_en;
+  output           E_ci_multi_clock;
+  output           E_ci_multi_reset;
+  output           E_ci_multi_start;
+  output           W_ci_estatus;
+  output  [ 31: 0] W_ci_ipending;
+  output           W_ci_status;
   output  [ 13: 0] d_address;
   output  [  3: 0] d_byteenable;
   output           d_read;
@@ -3169,7 +3202,8 @@ module Project2_nios2_qsys_0 (
   output  [ 31: 0] jtag_debug_module_readdata;
   output           jtag_debug_module_resetrequest;
   output           jtag_debug_module_waitrequest;
-  output           no_ci_readra;
+  input            E_ci_multi_done;
+  input   [ 31: 0] E_ci_result;
   input            clk;
   input   [ 31: 0] d_irq;
   input   [ 31: 0] d_readdata;
@@ -3184,6 +3218,13 @@ module Project2_nios2_qsys_0 (
   input   [ 31: 0] jtag_debug_module_writedata;
   input            reset_n;
 
+  wire    [  4: 0] D_ci_a;
+  wire    [  4: 0] D_ci_b;
+  wire    [  4: 0] D_ci_c;
+  wire    [  7: 0] D_ci_n;
+  wire             D_ci_readra;
+  wire             D_ci_readrb;
+  wire             D_ci_writerc;
   wire    [  1: 0] D_compare_op;
   wire             D_ctrl_alu_force_xor;
   wire             D_ctrl_alu_signed_comparison;
@@ -3290,6 +3331,7 @@ module Project2_nios2_qsys_0 (
   wire             D_op_intr;
   wire             D_op_jmp;
   wire             D_op_jmpi;
+  wire             D_op_lcd_0;
   wire             D_op_ldb;
   wire             D_op_ldbio;
   wire             D_op_ldbu;
@@ -3382,8 +3424,13 @@ module Project2_nios2_qsys_0 (
   wire    [ 32: 0] E_arith_result;
   wire    [ 31: 0] E_arith_src1;
   wire    [ 31: 0] E_arith_src2;
+  wire    [ 31: 0] E_ci_dataa;
+  wire    [ 31: 0] E_ci_datab;
+  reg              E_ci_multi_clk_en;
+  wire             E_ci_multi_clock;
+  wire             E_ci_multi_reset;
   wire             E_ci_multi_stall;
-  wire    [ 31: 0] E_ci_result;
+  reg              E_ci_multi_start;
   wire             E_cmp_result;
   wire    [ 31: 0] E_control_rd_data;
   wire             E_eq;
@@ -3498,6 +3545,7 @@ module Project2_nios2_qsys_0 (
   wire             F_op_intr;
   wire             F_op_jmp;
   wire             F_op_jmpi;
+  wire             F_op_lcd_0;
   wire             F_op_ldb;
   wire             F_op_ldbio;
   wire             F_op_ldbu;
@@ -3686,6 +3734,9 @@ module Project2_nios2_qsys_0 (
   reg              W_bstatus_reg;
   wire             W_bstatus_reg_inst_nxt;
   wire             W_bstatus_reg_nxt;
+  wire             W_ci_estatus;
+  wire    [ 31: 0] W_ci_ipending;
+  wire             W_ci_status;
   reg              W_cmp_result;
   reg     [ 31: 0] W_control_rd_data;
   reg              W_estatus_reg;
@@ -3752,7 +3803,6 @@ module Project2_nios2_qsys_0 (
   wire             jtag_debug_module_reset;
   wire             jtag_debug_module_resetrequest;
   wire             jtag_debug_module_waitrequest;
-  wire             no_ci_readra;
   wire             oci_hbreak_req;
   wire    [ 31: 0] oci_ienable;
   wire             oci_single_step_mode;
@@ -3976,6 +4026,7 @@ module Project2_nios2_qsys_0 (
   assign F_op_rsvx56 = F_op_opx & (F_iw_opx == 56);
   assign F_op_rsvx60 = F_op_opx & (F_iw_opx == 60);
   assign F_op_rsvx63 = F_op_opx & (F_iw_opx == 63);
+  assign F_op_lcd_0 = F_op_custom & 1'b1;
   assign F_op_opx = F_iw_op == 58;
   assign F_op_custom = F_iw_op == 50;
   assign D_op_call = D_iw_op == 0;
@@ -4104,21 +4155,33 @@ module Project2_nios2_qsys_0 (
   assign D_op_rsvx56 = D_op_opx & (D_iw_opx == 56);
   assign D_op_rsvx60 = D_op_opx & (D_iw_opx == 60);
   assign D_op_rsvx63 = D_op_opx & (D_iw_opx == 63);
+  assign D_op_lcd_0 = D_op_custom & 1'b1;
   assign D_op_opx = D_iw_op == 58;
   assign D_op_custom = D_iw_op == 50;
   assign R_en = 1'b1;
-  assign E_ci_result = 0;
+  assign E_ci_dataa = E_src1;
+  assign E_ci_datab = E_src2;
+  assign W_ci_ipending = W_ipending_reg;
+  assign W_ci_status = W_status_reg;
+  assign W_ci_estatus = W_estatus_reg;
+  assign D_ci_n = D_iw_custom_n;
+  assign D_ci_a = D_iw_a;
+  assign D_ci_b = D_iw_b;
+  assign D_ci_c = D_iw_c;
+  assign D_ci_readra = D_iw_custom_readra;
+  assign D_ci_readrb = D_iw_custom_readrb;
+  assign D_ci_writerc = D_iw_custom_writerc;
+  assign E_ci_multi_clock = clk;
+  assign E_ci_multi_reset = ~reset_n;
   //custom_instruction_master, which is an e_custom_instruction_master
-  assign no_ci_readra = 1'b0;
-  assign E_ci_multi_stall = 1'b0;
   assign iactive = d_irq[31 : 0] & 32'b00000000000000000000000000000011;
   assign F_pc_sel_nxt = R_ctrl_exception                          ? 2'b00 :
     R_ctrl_break                              ? 2'b01 :
     (W_br_taken | R_ctrl_uncond_cti_non_br)   ? 2'b10 :
     2'b11;
 
-  assign F_pc_no_crst_nxt = (F_pc_sel_nxt == 2'b00)? 2056 :
-    (F_pc_sel_nxt == 2'b01)? 8 :
+  assign F_pc_no_crst_nxt = (F_pc_sel_nxt == 2'b00)? 8 :
+    (F_pc_sel_nxt == 2'b01)? 1544 :
     (F_pc_sel_nxt == 2'b10)? E_arith_result[13 : 2] :
     F_pc_plus_one;
 
@@ -4129,7 +4192,7 @@ module Project2_nios2_qsys_0 (
   always @(posedge clk or negedge reset_n)
     begin
       if (reset_n == 0)
-          F_pc <= 2048;
+          F_pc <= 0;
       else if (F_pc_en)
           F_pc <= F_pc_nxt;
     end
@@ -4378,6 +4441,29 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
 
 
   assign E_stall = E_shift_rot_stall | E_ld_stall | E_st_stall | E_ci_multi_stall;
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          E_ci_multi_start <= 0;
+      else 
+        E_ci_multi_start <= E_ci_multi_start ? 1'b0 : 
+                (R_ctrl_custom_multi & R_valid);
+
+    end
+
+
+  always @(posedge clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          E_ci_multi_clk_en <= 0;
+      else 
+        E_ci_multi_clk_en <= E_ci_multi_clk_en ? ~E_ci_multi_done : 
+                (R_ctrl_custom_multi & R_valid);
+
+    end
+
+
+  assign E_ci_multi_stall = R_ctrl_custom_multi & E_valid & ~E_ci_multi_done;
   assign E_arith_src1 = { E_src1[31] ^ E_invert_arith_src_msb, 
     E_src1[30 : 0]};
 
@@ -4760,7 +4846,7 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
   //jtag_debug_module, which is an e_avalon_slave
   assign jtag_debug_module_clk = clk;
   assign jtag_debug_module_reset = ~reset_n;
-  assign D_ctrl_custom = 1'b0;
+  assign D_ctrl_custom = D_op_lcd_0;
   assign R_ctrl_custom_nxt = D_ctrl_custom;
   always @(posedge clk or negedge reset_n)
     begin
@@ -4771,7 +4857,7 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
     end
 
 
-  assign D_ctrl_custom_multi = 1'b0;
+  assign D_ctrl_custom_multi = D_op_lcd_0;
   assign R_ctrl_custom_multi_nxt = D_ctrl_custom_multi;
   always @(posedge clk or negedge reset_n)
     begin
@@ -5246,7 +5332,7 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
     end
 
 
-  assign D_ctrl_b_is_dst = D_op_addi|
+  assign D_ctrl_b_is_dst = (D_op_addi|
     D_op_andhi|
     D_op_orhi|
     D_op_xorhi|
@@ -5284,7 +5370,7 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
     D_op_initd|
     D_op_initda|
     D_op_flushd|
-    D_op_flushda;
+    D_op_flushda) & ~D_op_custom;
 
   assign R_ctrl_b_is_dst_nxt = D_ctrl_b_is_dst;
   always @(posedge clk or negedge reset_n)
@@ -5296,7 +5382,7 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
     end
 
 
-  assign D_ctrl_ignore_dst = D_op_br|
+  assign D_ctrl_ignore_dst = (D_op_br|
     D_op_bge|
     D_op_blt|
     D_op_bne|
@@ -5319,7 +5405,7 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
     D_op_rsv33|
     D_op_rsv41|
     D_op_rsv49|
-    D_op_rsv57;
+    D_op_rsv57) | (D_op_custom & ~D_iw_custom_writerc);
 
   assign R_ctrl_ignore_dst_nxt = D_ctrl_ignore_dst;
   always @(posedge clk or negedge reset_n)
@@ -5568,6 +5654,7 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
     (F_op_srai)? 56'h20202073726169 :
     (F_op_sra)? 56'h20202020737261 :
     (F_op_intr)? 56'h202020696e7472 :
+    (F_op_lcd_0)? 56'h20206c63645f30 :
     56'h20202020424144;
 
   assign D_inst = (D_op_call)? 56'h20202063616c6c :
@@ -5656,6 +5743,7 @@ defparam Project2_nios2_qsys_0_register_bank_b.lpm_file = "Project2_nios2_qsys_0
     (D_op_srai)? 56'h20202073726169 :
     (D_op_sra)? 56'h20202020737261 :
     (D_op_intr)? 56'h202020696e7472 :
+    (D_op_lcd_0)? 56'h20206c63645f30 :
     56'h20202020424144;
 
   assign F_vinst = F_valid ? F_inst : {7{8'h2d}};

@@ -126,6 +126,7 @@ module Project2_nios2_qsys_0_test_bench (
   wire             D_op_intr;
   wire             D_op_jmp;
   wire             D_op_jmpi;
+  wire             D_op_lcd_0;
   wire             D_op_ldb;
   wire             D_op_ldbio;
   wire             D_op_ldbu;
@@ -371,6 +372,7 @@ module Project2_nios2_qsys_0_test_bench (
   assign D_op_rsvx56 = D_op_opx & (D_iw_opx == 56);
   assign D_op_rsvx60 = D_op_opx & (D_iw_opx == 60);
   assign D_op_rsvx63 = D_op_opx & (D_iw_opx == 63);
+  assign D_op_lcd_0 = D_op_custom & 1'b1;
   assign D_op_opx = D_iw_op == 58;
   assign D_op_custom = D_iw_op == 50;
   always @(posedge clk or negedge reset_n)
