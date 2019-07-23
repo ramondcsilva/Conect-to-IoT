@@ -1,0 +1,131 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "graphic" (version "1.4"))
+(pin
+	(input)
+	(rect 104 176 272 192)
+	(text "INPUT" (rect 125 0 153 10)(font "Arial" (font_size 6)))
+	(text "clock" (rect 5 0 30 12)(font "Arial" ))
+	(pt 168 8)
+	(drawing
+		(line (pt 84 12)(pt 109 12))
+		(line (pt 84 4)(pt 109 4))
+		(line (pt 113 8)(pt 168 8))
+		(line (pt 84 12)(pt 84 4))
+		(line (pt 109 4)(pt 113 8))
+		(line (pt 109 12)(pt 113 8))
+	)
+	(text "VCC" (rect 128 7 148 17)(font "Arial" (font_size 6)))
+	(annotation_block (location)(rect 40 176 96 192))
+)
+(pin
+	(input)
+	(rect 112 216 280 232)
+	(text "INPUT" (rect 125 0 153 10)(font "Arial" (font_size 6)))
+	(text "rx_ESP" (rect 5 0 41 12)(font "Arial" ))
+	(pt 168 8)
+	(drawing
+		(line (pt 84 12)(pt 109 12))
+		(line (pt 84 4)(pt 109 4))
+		(line (pt 113 8)(pt 168 8))
+		(line (pt 84 12)(pt 84 4))
+		(line (pt 109 4)(pt 113 8))
+		(line (pt 109 12)(pt 113 8))
+	)
+	(text "VCC" (rect 128 7 148 17)(font "Arial" (font_size 6)))
+	(annotation_block (location)(rect 40 216 104 232))
+)
+(pin
+	(output)
+	(rect 104 232 280 248)
+	(text "OUTPUT" (rect 137 0 175 10)(font "Arial" (font_size 6)))
+	(text "tx_ESP" (rect 5 0 41 12)(font "Arial" ))
+	(pt 176 8)
+	(drawing
+		(line (pt 176 8)(pt 124 8))
+		(line (pt 124 4)(pt 98 4))
+		(line (pt 124 12)(pt 98 12))
+		(line (pt 124 12)(pt 124 4))
+		(line (pt 98 4)(pt 94 8))
+		(line (pt 94 8)(pt 98 12))
+		(line (pt 98 12)(pt 94 8))
+	)
+	(flipy)
+	(annotation_block (location)(rect 32 232 96 248))
+)
+(symbol
+	(rect 368 112 544 272)
+	(text "Project2" (rect 64 -1 120 15)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 144 25 156)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "clk_clk" (rect 0 0 37 14)(font "Arial" (font_size 8)))
+		(text "clk_clk" (rect 4 61 41 75)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 64 72))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "uart_RXD" (rect 0 0 54 14)(font "Arial" (font_size 8)))
+		(text "uart_RXD" (rect 4 101 58 115)(font "Arial" (font_size 8)))
+		(line (pt 0 112)(pt 64 112))
+	)
+	(port
+		(pt 0 128)
+		(output)
+		(text "uart_TXD" (rect 0 0 53 14)(font "Arial" (font_size 8)))
+		(text "uart_TXD" (rect 4 117 57 131)(font "Arial" (font_size 8)))
+		(line (pt 0 128)(pt 64 128))
+	)
+	(drawing
+		(text "clk" (rect 49 43 66 58)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 69 67 83 79)(font "Arial" (color 0 0 0)))
+		(text "uart" (rect 42 83 66 98)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "RXD" (rect 69 107 91 119)(font "Arial" (color 0 0 0)))
+		(text "TXD" (rect 69 123 89 135)(font "Arial" (color 0 0 0)))
+		(text " Project2 " (rect 138 144 185 156)(font "Arial" ))
+		(line (pt 65 52)(pt 65 76))
+		(line (pt 66 52)(pt 66 76))
+		(line (pt 65 92)(pt 65 132))
+		(line (pt 66 92)(pt 66 132))
+		(line (pt 64 32)(pt 112 32))
+		(line (pt 112 32)(pt 112 144))
+		(line (pt 64 144)(pt 112 144))
+		(line (pt 64 32)(pt 64 144))
+		(line (pt 0 0)(pt 176 0))
+		(line (pt 176 0)(pt 176 160))
+		(line (pt 0 160)(pt 176 160))
+		(line (pt 0 0)(pt 0 160))
+	)
+)
+(connector
+	(pt 280 240)
+	(pt 368 240)
+)
+(connector
+	(pt 280 224)
+	(pt 368 224)
+)
+(connector
+	(pt 272 184)
+	(pt 368 184)
+)
