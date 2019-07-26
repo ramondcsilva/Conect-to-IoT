@@ -2,17 +2,17 @@
 .equ buttons, 0x2050
 .equ esp, 0x2030
 
-.equ button0, 0x1 #r3
-.equ button1, 0x2 #r13
-.equ button2, 0x4 #r14
-.equ button3, 0x8 #r16
-.equ button4, 0x16 #r17
-.equ button5, 0x32 #r18
-.equ button6, 0x64 #r19
-.equ button7, 0x128 #r20
-.equ button8, 0x254 #r21
-.equ button9, 0x508 #r22
-.equ button10, 0x1024 #r23
+.equ button1, 0x1 #r3
+.equ button2, 0x2 #r13
+.equ button3, 0x4 #r14
+.equ button4, 0x8 #r16
+.equ button5, 0x10 #r17
+.equ button6, 0x20 #r18
+.equ button7, 0x40 #r19
+.equ button8, 0xffffff80 #r20
+.equ button9, 0x100 #r21
+.equ button10, 0x200 #r22
+.equ button11, 0x400 #r23
 
 #Macro usado para instrucoes do lcd, facilita a chamada
 .macro instr databits
@@ -30,6 +30,13 @@
 
 /*IP local:192.168.43.11 , End MAC: 18:FE:34:DA:55:E0*/
 
+/*
+topico: SDTopic
+porta: 1883
+
+*/
+
+
 main:
 	call initialize
 	br menu
@@ -44,46 +51,18 @@ menu:
 comands:
 	ldbio r10, 0(r12)
 	bne r10, r0, comands
-	beq r11, r3, echoMod
-	beq r11, r13, tcpPingBroker
-	beq r11, r14, chooseMod
-	beq r11, r16, connectAP
+	beq r11, r3, echoMod      		#OK 1
+	beq r11, r13, tcpStatus			#OK 2
+	beq r11, r14, chooseMod 		#OK 3
+	beq r11, r16, connectAP        	#OK 4
+	beq r11, r17, clearDisplay     	#OK 5
+	beq r11, r18, tcpConfigBroker  	#OK 6
+	beq r11, r19, mqttConnection   	#OK 7
+	beq r11, r20, mqttPublisher		#   8
+	#beq r11, r21, mqttPublisher	#   9
 
+tcpStatus:
 
-# Retorna versao atual do firmware
-versionFirm:
-	movi r5,65 #A
-	call sendChar
-	#call delay
-	movi r5,84 #T
-	call sendChar
-	#call delay
-	movi r5,43 #+
-	call sendChar
-	#call delay
-	movi r5,71 #G
-	call sendChar
-	#call delay
-	movi r5,77 #M
-	call sendChar
-	#call delay
-	movi r5,82 #R
-	call sendChar
-	#call delay
-	movi r5,13 #\r
-	call sendChar
-	#call delay
-	movi r5,10 #\n
-	call sendChar
-	#call delay
-
-	addi r9,r9,4
-	#call print
-	jmp r9
-
-
-# Resertar Modulo ESP8266
-reset:
 	movi r5,65 #A
 	call sendChar
 	call delay
@@ -93,7 +72,13 @@ reset:
 	movi r5,43 #+
 	call sendChar
 	call delay
-	movi r5,82 #R
+	movi r5,67 #C
+	call sendChar
+	call delay
+	movi r5,73 #I
+	call sendChar
+	call delay
+	movi r5,80 #P
 	call sendChar
 	call delay
 	movi r5,83 #S
@@ -102,6 +87,18 @@ reset:
 	movi r5,84 #T
 	call sendChar
 	call delay
+	movi r5,65 #A
+	call sendChar
+	call delay
+	movi r5,84 #T
+	call sendChar
+	call delay
+	movi r5,85 #U
+	call sendChar
+	call delay
+	movi r5,83 #S
+	call sendChar
+	call delay
 	movi r5,13 #\r
 	call sendChar
 	call delay
@@ -109,6 +106,38 @@ reset:
 	call sendChar
 	call delay
 
+	nextpc r9
+	br print
+	br menu
+
+
+clearDisplay:
+  	nextpc r9
+  	br print
+  	br menu
+
+# Resertar Modulo ESP8266
+reset:
+	movi r5,65 #A
+	call sendChar
+	movi r5,84 #T
+	call sendChar
+	movi r5,43 #+
+	call sendChar
+	movi r5,82 #R
+	call sendChar
+	movi r5,83 #S
+	call sendChar
+	movi r5,84 #T
+	call sendChar
+	movi r5,13 #\r
+	call sendChar
+	movi r5,10 #\n
+	call sendChar
+	call delay
+
+	nextpc r9
+	br print
 	br menu
 
 # Modo que retorna comando at enviado
@@ -131,6 +160,7 @@ echoMod:
 	movi r5,10 #\n
 	call sendChar
 	call delay
+	
 	nextpc r9
 	br print
 	br menu
@@ -138,46 +168,77 @@ echoMod:
 # Printa os caracteres recebidos do ESP
 print:
 	instr r3 #Limpa buffer do LCD
+
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2	
+	call delay	
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay	
 	call getChar
-	data r2
+	call delay	
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay	
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay	
 	call getChar
-	data r2
+	call delay	
 	call getChar
-	data r2
+	call delay
+
+	movi r15, 0xc0 # move para 2 linha
+	instr r15
+
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay	
 	call getChar
-	data r2
+	call delay
 	call getChar
-	data r2
+	call delay
+	call getChar
+	call delay	
+	call getChar
+	call delay	
+	call getChar
+	call delay
+	call getChar
+	call delay	
+	call getChar
+	call delay
+	call getChar
+	call delay
+	call getChar
+	call delay
+	call getChar
+	call delay
+	call getChar
+	call delay
+	call getChar
+	call delay	
+	call getChar
+	call delay	
+	call getChar
+	call delay
+
+
 	addi r9, r9, 4
 	#movi r15, 0xc0 # move para 2 linha
 	#instr r15
@@ -275,7 +336,6 @@ connectAP:
 	movi r5,80 #P
 	call sendChar
 	call delay
-	/*
 	movi r5,95 #_
 	call sendChar
 	call delay
@@ -288,7 +348,6 @@ connectAP:
 	movi r5,82 #R
 	call sendChar
 	call delay
-	*/
 	movi r5,61 #=
 	call sendChar
 	call delay
@@ -382,7 +441,6 @@ connectAP:
 	movi r5,10 #\n
 	call sendChar
 	call delay
-
 	
 	nextpc r9
 	br print
@@ -437,75 +495,11 @@ enableConnect:
 	call sendChar
 	call delay
 
-	addi r9,r9,4
-	jmp r9
+	nextpc r9
+	br print
+	br menu
 
-/*
-O monitor do servidor será criado automaticamente quando o servidor for criado. Quando um cliente está conectado ao servidor, ele recebe uma conexão e recebe um ID.
-*/
-tcpConfig:
-	movi r5,65 #A
-	call sendChar
-	call delay
-	movi r5,84 #T
-	call sendChar
-	call delay
-	movi r5,43 #+
-	call sendChar
-	call delay
-	movi r5,67 #C
-	call sendChar
-	call delay
-	movi r5,73 #I
-	call sendChar
-	call delay
-	movi r5,80 #P
-	call sendChar
-	call delay
-	movi r5,83 #S
-	call sendChar
-	call delay
-	movi r5,69 #E
-	call sendChar
-	call delay
-	movi r5,82 #R
-	call sendChar
-	call delay
-	movi r5,86 #V
-	call sendChar
-	call delay
-	movi r5,69 #E
-	call sendChar
-	call delay
-	movi r5,82 #R
-	call sendChar
-	call delay
-	movi r5,61 #=
-	call sendChar
-	call delay
-	movi r5,49 #1
-	call sendChar
-	call delay
-	movi r5,44 #,
-	call sendChar
-	call delay
-	movi r5,56 #8
-	call sendChar
-	call delay
-	movi r5,48 #0
-	call sendChar
-	call delay
-	movi r5,13 #\r
-	call sendChar
-	call delay
-	movi r5,10 #\n
-	call sendChar
-	call delay
-
-	addi r9,r9,4
-	jmp r9
-
-tcpPingBroker:
+tcpPing:
 	movi r5,65 #A
 	call sendChar
 	call delay
@@ -569,7 +563,7 @@ tcpPingBroker:
 	movi r5,48 #0
 	call sendChar
 	call delay
-	movi r5,48 #0
+	movi r5,49 #1
 	call sendChar
 	call delay
 	movi r5,34 #"
@@ -582,14 +576,10 @@ tcpPingBroker:
 	movi r5,10 #\n
 	call sendChar
 	call delay
-	br print
-	nextpc r9
-	a:
-	br a
-	
-	addi r9,r9,4
-	jmp r9
 
+	nextpc r9
+	br print
+	br menu
 
 tcpConfigBroker:
 	movi r5,65 #A
@@ -685,7 +675,7 @@ tcpConfigBroker:
 	movi r5,48 #0
 	call sendChar
 	call delay
-	movi r5,48 #0
+	movi r5,49 #1
 	call sendChar
 	call delay
 	movi r5,34 #"
@@ -713,11 +703,11 @@ tcpConfigBroker:
 	call sendChar
 	call delay
 
-	c:
-	br c
-	addi r9,r9,4
-	jmp r9
+	nextpc r9
+	br print
+	br menu
 
+/*
 exitConnect:
 	movi r5,65 #A
 	call sendChar
@@ -759,8 +749,9 @@ exitConnect:
 	call sendChar
 	call delay
 
-	addi r9,r9,4
-	jmp r9
+	nextpc r9
+	br print
+	br menu
 
 # AT+CWQAP - Desconecta Access Point
 disconnectAP:
@@ -795,9 +786,239 @@ disconnectAP:
 	call sendChar
 	call delay
 	
-	addi r9,r9,4
-	jmp r9
+	nextpc r9
+	br print
+	br menu
+*/
 
+mqttConnection:
+	movi r5,65 #A
+	call sendChar
+	call delay
+	movi r5,84 #T
+	call sendChar
+	call delay
+	movi r5,43 #+
+	call sendChar
+	call delay
+	movi r5,67 #C
+	call sendChar
+	call delay
+	movi r5,73 #I
+	call sendChar
+	call delay
+	movi r5,80 #P
+	call sendChar
+	call delay
+	movi r5,83 #S
+	call sendChar
+	call delay
+	movi r5,69 #E
+	call sendChar
+	call delay
+	movi r5,78 #N
+	call sendChar
+	call delay
+	movi r5,68 #D
+	call sendChar
+	call delay
+	movi r5,61 #=
+	call sendChar
+	call delay
+	movi r5,49 #1
+	call sendChar
+	call delay
+	movi r5,53 #5
+	call sendChar
+	call delay
+	movi r5,13 #\r
+	call sendChar
+	call delay
+	movi r5,10 #\n
+	call sendChar
+	call delay
+	# CONTROLE + FLAG FIXED HEADER
+	
+	movi r5,16 #Controle + FLAG
+	call sendChar
+	call delay
+	movi r5,12 #VARIABLE + PAYLOAD
+	call sendChar
+	call delay
+
+ 	# VARIABLE HEADER
+	movi r5,0 # MSB
+	call sendChar
+	call delay
+	movi r5,4 # LSB
+	call sendChar
+	call delay
+	movi r5,77 #M
+	call sendChar
+	call delay
+	movi r5,81 #Q
+	call sendChar
+	call delay
+	movi r5,84 #T
+	call sendChar
+	call delay
+	movi r5,84 #T
+	call sendChar
+	call delay
+	movi r5,13 #\r
+	call sendChar
+	call delay
+
+	movi r5,4 #Versao PROTOCOLO
+	call sendChar
+	call delay
+	movi r5,6 #FLAG
+	call sendChar
+	call delay
+	movi r5,0 #Keep Alive MSB
+	call sendChar
+	call delay
+	movi r5,120 #Keep Alive LSB
+	call sendChar
+
+
+# PAYLOAD
+	movi r5,0 #Tamanho id Cliente MSB
+	call sendChar
+	call delay	
+	movi r5,1 #Tamanho id Cliente LSB
+	call sendChar
+	call delay
+
+	movi r5,65 #Cliente
+	call sendChar
+	call delay
+	movi r5,13 #\r
+	call sendChar
+	call delay
+
+	nextpc r9
+	br print
+	br menu	
+
+
+mqttPublisher:
+	movi r5,65 #A
+	call sendChar
+	call delay
+	movi r5,84 #T
+	call sendChar
+	call delay
+	movi r5,43 #+
+	call sendChar
+	call delay
+	movi r5,67 #C
+	call sendChar
+	call delay
+	movi r5,73 #I
+	call sendChar
+	call delay
+	movi r5,80 #P
+	call sendChar
+	call delay
+	movi r5,83 #S
+	call sendChar
+	call delay
+	movi r5,69 #E
+	call sendChar
+	call delay
+	movi r5,78 #N
+	call sendChar
+	call delay
+	movi r5,68 #D
+	call sendChar
+	call delay
+	movi r5,61 #=
+	call sendChar
+	call delay
+	movi r5,49 #1
+	call sendChar
+	call delay
+	movi r5,56 #8
+	call sendChar
+	call delay
+	movi r5,13 #\r
+	call sendChar
+	call delay
+	movi r5,10 #\n
+	call sendChar
+	call delay
+
+
+	# FIXED HEADER
+	movi r5,48 # CONTROL E FLAG
+	call sendChar
+	call delay
+	movi r5,14 # Tamanho da mensagem TOTAL
+	call sendChar
+	call delay
+	
+
+	# VARIABLE HEADER UTF-8
+	movi r5,0 	# Tamanho do Topico MSB
+	call sendChar
+	call delay
+	movi r5,7 	# Tamanho do Topico LSB
+	call sendChar
+	call delay
+	movi r5,83  #S
+	call sendChar
+	call delay
+	movi r5,68  #D
+	call sendChar
+	call delay
+	movi r5,84  #T
+	call sendChar
+	call delay
+	movi r5,111 #o
+	call sendChar
+	call delay
+	movi r5,112 #p
+	call sendChar
+	call delay
+	movi r5,105 #i
+	call sendChar
+	call delay
+	movi r5,99  #c
+	call sendChar
+	call delay
+	movi r5,13 #\r
+	call sendChar
+	call delay
+	movi r5,67  #C
+	call sendChar
+	call delay
+	movi r5,104 #h
+	call sendChar
+	call delay
+	movi r5,101 #e
+	call sendChar
+	call delay
+	movi r5,103 #g
+	call sendChar
+	call delay
+	movi r5,117 #u
+	call sendChar
+	call delay
+	movi r5,101 #e
+	call sendChar
+	call delay
+	movi r5,105 #i
+	call sendChar
+	call delay
+	movi r5,13 #\r
+	call sendChar
+	call delay
+
+	nextpc r9
+	br print
+	br menu
+ # Tamanho das coisas, e uso do /n /r
 delay:
 	movi r8,16000
 	movi r1,0
@@ -834,7 +1055,7 @@ As sub-rotinas getChar são características do UR232UART,e retornam esse caract
 **/
 getChar: 
 	/* save any modified registers */
-	subi sp, sp, 8 												/* reserve space on the stack */
+	subi sp, sp, 8												/* reserve space on the stack */
 	stw r5, 0(sp) 												/* save register */
 	ldwio r2, 0(r4) 											/* read the RS232 UART Data register */
 	andi r5, r2, 0x8000 										/* check if there is new data */
@@ -844,15 +1065,16 @@ getChar:
 returnChar:
 	andi r5, r2, 0x00ff 										/* the data is in the least significant byte */
 	mov r2, r5 													/* set r2 with the return value */
-
-	/* restore registers */
+	/* restore registers */  
 	ldw r5, 0(sp)
 	addi sp, sp, 8
+	beq r5, r0, retorno
+	beq r2, r0, retorno
+	data r2
 	ret
 
-
-
-
+retorno:
+	ret
 # Inicializa o LCD com suas instruções de fucionamento e adiciona aos registradores os endereços dos botoes,leds
 initialize:
 	movi r15, 0x30 #Seleciona função
@@ -875,10 +1097,16 @@ initialize:
 # Adicionando endereço de botoes, leds, aos registradores
 	movi r12, buttons
 	movi r4, esp #base do RS232
-	movi r3, button0
-	movi r13, button1
-	movi r14, button2
-	movi r16, button3
+	movi r3, button1
+	movi r13, button2
+	movi r14, button3
+	movi r16, button4
+	movi r17, button5
+	movi r18, button6
+	movi r19, button7
+	movi r20, button8
+	movi r21, button9
+	movi r22, button10
 	ret
 
 end:
