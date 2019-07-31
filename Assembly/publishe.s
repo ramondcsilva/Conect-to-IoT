@@ -51,15 +51,14 @@ menu:
 comands:
 	ldbio r10, 0(r12)
 	bne r10, r0, comands
-	beq r11, r3, tcpPing      		#OK 1
-	beq r11, r13, tcpStatus			#OK 2
+	beq r11, r3, echoMod      		#OK 1
+	beq r11, r13, clearDisplay		#OK 2
 	beq r11, r14, chooseMod 		#OK 3
-	beq r11, r16, connectAP        	#OK 4
-	beq r11, r17, clearDisplay     	#OK 5
-	beq r11, r18, tcpConfigBroker  	#OK 6
-	beq r11, r19, mqttConnection   	#OK 7
+	beq r11, r16, enableConnect   	#OK 4
+	beq r11, r17, connectAP     	#OK 5
+	beq r11, r18, tcpConnect  		#OK 6
+	beq r11, r19, mqttConnection   	#   7
 	beq r11, r20, mqttPublisher		#   8
-	#beq r11, r21, mqttPublisher	#   9
 
 tcpStatus:
 
@@ -168,106 +167,75 @@ echoMod:
 # Printa os caracteres recebidos do ESP
 print:
 	instr r3 #Limpa buffer do LCD
-	call getChar
-	#call delay
-	data r2
-	call getChar
-	#call delay
-	data r2	
+
 	call getChar
 	call delay
-	data r2
+	call getChar
+	call delay	
 	call getChar
 	call delay
-	data r2
 	call getChar
 	call delay
-	data r2	
+	call getChar
+	call delay	
+	call getChar
+	call delay	
 	call getChar
 	call delay
-	data r2	
+	call getChar
+	call delay	
 	call getChar
 	call delay
-	data r2
 	call getChar
 	call delay
-	data r2	
 	call getChar
 	call delay
-	data r2
 	call getChar
 	call delay
-	data r2
 	call getChar
 	call delay
-	data r2	
+	call getChar
+	call delay	
+	call getChar
+	call delay	
 	call getChar
 	call delay
-	data r2
-	call getChar
-	call delay
-	data r2
-	call getChar
-	call delay
-	data r2	
-	call getChar
-	call delay
-	data r2	
-	call getChar
-	call delay
-	data r2
 
 	movi r15, 0xc0 # move para 2 linha
 	instr r15
 
 	call getChar
 	call delay
-	data r2	
+	call getChar
+	call delay	
 	call getChar
 	call delay
-	data r2
 	call getChar
 	call delay
-	data r2
+	call getChar
+	call delay	
+	call getChar
+	call delay	
 	call getChar
 	call delay
-	data r2	
+	call getChar
+	call delay	
 	call getChar
 	call delay
-	data r2
 	call getChar
 	call delay
-	data r2
 	call getChar
 	call delay
-	data r2	
 	call getChar
 	call delay
-	data r2	
 	call getChar
 	call delay
-	data r2
+	call getChar
+	call delay	
+	call getChar
+	call delay	
 	call getChar
 	call delay
-	data r2	
-	call getChar
-	call delay
-	data r2
-	call getChar
-	call delay
-	data r2
-	call getChar
-	call delay
-	data r2	
-	call getChar
-	call delay
-	data r2
-	call getChar
-	call delay
-	data r2
-	call getChar
-	call delay
-	data r2	
 
 
 	addi r9, r9, 4
@@ -277,7 +245,7 @@ print:
 	#br menu
 
 /*
-AT+chooseMod_CUR=3
+AT+chooseMod_CUR=1
 Existem três modos de funcionamento WiFi: Modo Estação, modo softAP e a coexistência do modo Estação e do modo softAP. Este comando é usado para adquirir o modo Wi-Fi existente 
 ou para definir um modo WiFi personalizado.
 */
@@ -612,7 +580,7 @@ tcpPing:
 	br print
 	br menu
 
-tcpConfigBroker:
+tcpConnect:
 	movi r5,65 #A
 	call sendChar
 	call delay
@@ -859,7 +827,7 @@ mqttConnection:
 	movi r5,49 #1
 	call sendChar
 	call delay
-	movi r5,54 #4
+	movi r5,53 #5
 	call sendChar
 	call delay
 	movi r5,13 #\r
@@ -896,17 +864,20 @@ mqttConnection:
 	movi r5,84 #T
 	call sendChar
 	call delay
+	movi r5,13 #\r
+	call sendChar
+	call delay
 
 	movi r5,4 #Versao PROTOCOLO
 	call sendChar
 	call delay
-	movi r5,2 #FLAG
+	movi r5,6 #FLAG
 	call sendChar
 	call delay
 	movi r5,0 #Keep Alive MSB
 	call sendChar
 	call delay
-	movi r5,60 #Keep Alive LSB
+	movi r5,120 #Keep Alive LSB
 	call sendChar
 
 
@@ -914,57 +885,16 @@ mqttConnection:
 	movi r5,0 #Tamanho id Cliente MSB
 	call sendChar
 	call delay	
-	movi r5,13 #Tamanho id Cliente LSB
+	movi r5,1 #Tamanho id Cliente LSB
 	call sendChar
 	call delay
 
-
-	movi r5,49 #1
+	movi r5,65 #Cliente
 	call sendChar
 	call delay
-	movi r5,57 #9
+	movi r5,13 #\r
 	call sendChar
 	call delay
-	movi r5,50 #2
-	call sendChar
-	call delay
-	movi r5,46 #.
-	call sendChar
-	call delay
-	movi r5,49 #1
-	call sendChar
-	call delay
-	movi r5,54 #6
-	call sendChar
-	call delay
-	movi r5,56 #8
-	call sendChar
-	call delay
-	movi r5,46 #.
-	call sendChar
-	call delay
-	movi r5,49 #1
-	call sendChar
-	call delay
-	movi r5,46 #.
-	call sendChar
-	call delay
-	movi r5,50 #2
-	call sendChar
-	call delay
-	movi r5,48 #0
-	call sendChar
-	call delay
-	movi r5,49 #1
-	call sendChar
-	call delay
-		
-	# movi r5,13 #\r
-	# call sendChar
-	# call delay
-	# movi r5,10 #\n
-	# call sendChar
-	# call delay
 
 	nextpc r9
 	br print
@@ -1023,12 +953,12 @@ mqttPublisher:
 	movi r5,48 # CONTROL E FLAG
 	call sendChar
 	call delay
-	movi r5,16 # Tamanho da mensagem TOTAL
+	movi r5,14 # Tamanho da mensagem TOTAL
 	call sendChar
 	call delay
 	
 
-	# VARIABLE HEADER
+	# VARIABLE HEADER UTF-8
 	movi r5,0 	# Tamanho do Topico MSB
 	call sendChar
 	call delay
@@ -1056,7 +986,9 @@ mqttPublisher:
 	movi r5,99  #c
 	call sendChar
 	call delay
-
+	movi r5,13 #\r
+	call sendChar
+	call delay
 	movi r5,67  #C
 	call sendChar
 	call delay
@@ -1078,16 +1010,14 @@ mqttPublisher:
 	movi r5,105 #i
 	call sendChar
 	call delay
+	movi r5,13 #\r
+	call sendChar
+	call delay
 
-	# movi r5,13 #\r
-	# call sendChar
-	# call delay
-	# movi r5,10 #\n
-	# call sendChar
-	# call delay
-
+	nextpc r9
+	br print
 	br menu
-
+ # Tamanho das coisas, e uso do /n /r
 delay:
 	movi r8,16000
 	movi r1,0
@@ -1106,12 +1036,12 @@ registrador Control. Se não houver espaço, a sub-rotina pula a instrução stwio, 
 */
 sendChar:
 	/* save any modified registers */
-	subi sp, sp, 4 												/* reserve space on the stack */
-	stw r6, 0(sp) 												/* save register */
-	ldwio r6, 4(r4) 											/* read the RS232 UART Control register */
-	andhi r6, r6, 0x00ff 										/* check for write space */
-	beq r6, r0, endPut 										/* if no space, ignore the character */
-	stwio r5, 0(r4) 											/* send the character */
+	subi sp, sp, 4 							/* reserve space on the stack */
+	stw r6, 0(sp) 							/* save register */
+	ldwio r6, 4(r4) 						/* read the RS232 UART Control register */
+	andhi r6, r6, 0x00ff 					/* check for write space */
+	beq r6, r0, endPut 						/* if no space, ignore the character */
+	stwio r5, 0(r4) 						/* send the character */
 
 endPut:
 	/* restore registers */
@@ -1124,25 +1054,26 @@ As sub-rotinas getChar são características do UR232UART,e retornam esse caracter
 **/
 getChar: 
 	/* save any modified registers */
-	subi sp, sp, 8 												/* reserve space on the stack */
-	stw r5, 0(sp) 												/* save register */
-	ldwio r2, 0(r4) 											/* read the RS232 UART Data register */
-	andi r5, r2, 0x8000 										/* check if there is new data */
+	subi sp, sp, 8								/* reserve space on the stack */
+	stw r5, 0(sp) 								/* save register */
+	ldwio r2, 0(r4) 							/* read the RS232 UART Data register */
+	andi r5, r2, 0x8000 						/* check if there is new data */
 	bne r5, r0, returnChar
-	mov r2, r0 													/* if no new data, return ‘\0’ */
+	mov r2, r0 									/* if no new data, return ‘\0’ */
 
 returnChar:
-	andi r5, r2, 0x00ff 										/* the data is in the least significant byte */
-	mov r2, r5 													/* set r2 with the return value */
-
-	/* restore registers */
+	andi r5, r2, 0x00ff 						/* the data is in the least significant byte */
+	mov r2, r5 									/* set r2 with the return value */
+	/* restore registers */  
 	ldw r5, 0(sp)
 	addi sp, sp, 8
+	beq r5, r0, retorno
+	beq r2, r0, retorno
+	data r2
 	ret
 
-
-
-
+retorno:
+	ret
 # Inicializa o LCD com suas instruções de fucionamento e adiciona aos registradores os endereços dos botoes,leds
 initialize:
 	movi r15, 0x30 #Seleciona função
