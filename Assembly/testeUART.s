@@ -37,12 +37,9 @@ porta: 1883
 */
 
 main:
-	call initialize
-	nextpc r19
-	br chooseMod
-	nextpc r19
-	br connectAP
-	br menu
+	addi r5, r0, 0x2
+	call sendChar
+	br main
 
 # Espera entrada de buttons para enviar comandos
 menu:
