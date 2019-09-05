@@ -1,0 +1,479 @@
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,43 #+
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,87 #W
+call sendChar
+call delay
+movi r5,77 #M
+call sendChar
+call delay
+movi r5,79 #O
+call sendChar
+call delay
+movi r5,68 #D
+call sendChar
+call delay
+movi r5,69 #E
+call sendChar
+call delay
+movi r5,95 #_
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,85 #U
+call sendChar
+call delay
+movi r5,82 #R
+call sendChar
+call delay
+movi r5,61 #=
+call sendChar
+call delay
+movi r5,49 #1
+call sendChar
+call delay
+movi r5,13 #\r
+call sendChar
+call delay
+movi r5,10 #\n
+call sendChar
+call delay
+
+
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,43 #+
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,87 #W
+call sendChar
+call delay
+movi r5,74 #J
+call sendChar
+call delay
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,80 #P
+call sendChar
+call delay
+movi r5,95 #_
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,85 #U
+call sendChar
+call delay
+movi r5,82 #R
+call sendChar
+call delay
+movi r5,61 #=
+call sendChar
+call delay
+movi r5,34 #"
+call sendChar
+call delay
+movi r5,87 #W
+call sendChar
+call delay
+movi r5,76 #L
+call sendChar
+call delay
+movi r5,101 #e
+call sendChar
+call delay
+movi r5,115 #s
+call sendChar
+call delay
+movi r5,115 #s
+call sendChar
+call delay
+movi r5,76 #L
+call sendChar
+call delay
+movi r5,69 #E
+call sendChar
+call delay
+movi r5,68 #D
+call sendChar
+call delay
+movi r5,83 #S
+call sendChar
+call delay
+movi r5,34 #"
+call sendChar
+call delay
+movi r5,44 #,
+call sendChar
+call delay
+movi r5,34 #"
+call sendChar
+call delay
+movi r5,72 #H
+call sendChar
+call delay
+movi r5,101 #e
+call sendChar
+call delay
+movi r5,108 #l
+call sendChar
+call delay
+movi r5,108 #l
+call sendChar
+call delay
+movi r5,111 #o
+call sendChar
+call delay
+movi r5,87 #W
+call sendChar
+call delay
+movi r5,111 #o
+call sendChar
+call delay
+movi r5,114 #r
+call sendChar
+call delay
+movi r5,108 #l
+call sendChar
+call delay
+movi r5,100 #d
+call sendChar
+call delay
+movi r5,77 #M
+call sendChar
+call delay
+movi r5,80 #P
+call sendChar
+call delay
+movi r5,51 #3
+call sendChar
+call delay
+movi r5,49 #1
+call sendChar
+call delay
+movi r5,34 #"
+call sendChar
+call delay
+movi r5,13 #\r
+call sendChar
+call delay
+movi r5,10 #\n
+call sendChar
+call delay
+
+
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,43 #+
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,73 #I
+call sendChar
+call delay
+movi r5,80 #P
+call sendChar
+call delay
+movi r5,77 #M
+call sendChar
+call delay
+movi r5,85 #U
+call sendChar
+call delay
+movi r5,88 #X
+call sendChar
+call delay
+movi r5,61 #=
+call sendChar
+call delay
+movi r5,48 #0
+call sendChar
+call delay
+movi r5,13 #\r
+call sendChar
+call delay
+movi r5,10 #\n
+call sendChar
+call delay
+
+
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,43 #+
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,73 #I
+call sendChar
+call delay
+movi r5,80 #P
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,76 #L
+call sendChar
+call delay
+movi r5,79 #O
+call sendChar
+call delay
+movi r5,83 #S
+call sendChar
+call delay
+movi r5,69 #E
+call sendChar
+call delay
+movi r5,13 #\r
+call sendChar
+call delay
+movi r5,10 #\n
+call sendChar
+call delay
+
+
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,43 #+
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,73 #I
+call sendChar
+call delay
+movi r5,80 #P
+call sendChar
+call delay
+movi r5,83 #S
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,82 #R
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,61 #=
+call sendChar
+call delay
+movi r5,34 #"
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,80 #P
+call sendChar
+call delay
+movi r5,34 #"
+call sendChar
+call delay
+movi r5,44 #,
+call sendChar
+call delay
+movi r5,34 #"
+call sendChar
+call delay
+movi r5,49 #1
+call sendChar
+call delay
+movi r5,57 #9
+call sendChar
+call delay
+movi r5,50 #2
+call sendChar
+call delay
+movi r5,46 #.
+call sendChar
+call delay
+movi r5,49 #1
+call sendChar
+call delay
+movi r5,54 #6
+call sendChar
+call delay
+movi r5,56 #8
+call sendChar
+call delay
+movi r5,46 #.
+call sendChar
+call delay
+movi r5,49 #1
+call sendChar
+call delay
+movi r5,46 #.
+call sendChar
+call delay
+movi r5,50 #2
+call sendChar
+call delay
+movi r5,48 #0
+call sendChar
+call delay
+movi r5,49 #1
+call sendChar
+call delay
+movi r5,34 #"
+call sendChar
+call delay
+movi r5,44 #,
+call sendChar
+call delay
+movi r5,49 #1
+call sendChar
+call delay
+movi r5,56 #8
+call sendChar
+call delay
+movi r5,56 #8
+call sendChar
+call delay
+movi r5,51 #3
+call sendChar
+call delay
+movi r5,13 #\r
+call sendChar
+call delay
+movi r5,10 #\n
+call sendChar
+call delay
+
+
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,43 #+
+call sendChar
+call delay
+movi r5,83 #S
+call sendChar
+call delay
+movi r5,73 #I
+call sendChar
+call delay
+movi r5,80 #P
+call sendChar
+call delay
+movi r5,83 #S
+call sendChar
+call delay
+movi r5,69 #E
+call sendChar
+call delay
+movi r5,78 #N
+call sendChar
+call delay
+movi r5,68 #D
+call sendChar
+call delay
+movi r5,61 #=
+call sendChar
+call delay
+movi r5,50 #2
+call sendChar
+call delay
+movi r5,54 #6
+call sendChar
+call delay
+movi r5,13 #\r
+call sendChar
+call delay
+movi r5,10 #\n
+call sendChar
+call delay
+
+
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,43 #+
+call sendChar
+call delay
+movi r5,67 #C
+call sendChar
+call delay
+movi r5,73 #I
+call sendChar
+call delay
+movi r5,80 #P
+call sendChar
+call delay
+movi r5,83 #S
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,65 #A
+call sendChar
+call delay
+movi r5,84 #T
+call sendChar
+call delay
+movi r5,85 #U
+call sendChar
+call delay
+movi r5,83 #S
+call sendChar
+call delay
+movi r5,13 #\r
+call sendChar
+call delay
+movi r5,10 #\n
+call sendChar
+call delay
+
+
